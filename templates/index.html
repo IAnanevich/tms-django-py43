@@ -5,8 +5,54 @@
     <title>My site</title>
 </head>
 <body>
-    <h1>Hello world</h1>
-    <h2>It's me</h2>
-    <h3>Bye-bye</h3>
+{#    <h1>Hello world</h1>#}
+{#    <h2>It's me</h2>#}
+{#    <h3>Bye-bye</h3>#}
+
+{#    <br>#}
+
+    <h1>Amount posts: {{ posts.count }}</h1>
+
+    <br>
+
+    {% block block_posts %}
+        <h3>All posts:</h3>
+        <ol>
+            {% for post in posts %}
+                <li>
+                    <a href="{% url 'post' post.id %}"><h4>{{ post.name }}</h4></a>
+                </li>
+            {% endfor %}
+        </ol>
+    {% endblock %}
+
+
+{#    <a href="{% url 'test' %}">Admin panel</a>#}
+
+{#    <table width=100% border="1px solid">#}
+{#        <tr>#}
+{#            <th>Name</th>#}
+{#            <th>Text</th>#}
+{#            <th>Price</th>#}
+{#        </tr>#}
+{##}
+{#        {% for post in posts %}#}
+{#            <tr>#}
+{#                <td>{{ post.name }}</td>#}
+{#                <td>{{ post.text }}</td>#}
+{#                <td>{{ post.price }}</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+
+{#    </table>#}
+
+{#    <label for="">#}
+{#        Enter some message#}
+{#        <br>#}
+{#        <input type="password">#}
+{#    </label>#}
+
+{#<img src="https://h5p.org/sites/default/files/h5p/content/1209180/images/file-6113d5f8845dc.jpeg" alt="" width="50%" height="50%">#}
+
 </body>
 </html>
