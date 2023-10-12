@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import generic
 
+from info.form import InfoBlogForm
 from info.models import InfoBlog
 
 
@@ -37,7 +39,14 @@ class PostListView(generic.ListView):
 
 
 class PostCreateView(generic.CreateView):
-    pass
+    # model = InfoBlog
+    template_name = 'info_blog/post_create.html'
+    form_class = InfoBlogForm
+    # fields = ('name', 'text', 'rating', 'price')
+    # success_url = '/blog/posts/'
+
+    def get_success_url(self):
+        return reverse('post-list')
 
 
 class PostDetailView(generic.DetailView):
@@ -48,11 +57,20 @@ class PostDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = InfoBlog.objects.filter(is_deleted=False)
+        # print(50*'-')
+        # print(context['posts'].values()[0]['name'])
+        # print(context['posts'].query)
+        # print(50*'-')
         return context
 
 
 class PostUpdateView(generic.UpdateView):
-    pass
+    model = InfoBlog
+    template_name = 'info_blog/post_update.html'
+    form_class = InfoBlogForm
+
+    def get_success_url(self):
+        return reverse('post-list')
 
 
 class PostDeleteView(generic.DeleteView):

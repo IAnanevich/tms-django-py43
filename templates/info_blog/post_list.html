@@ -8,6 +8,9 @@
 </head>
 <body>
     {% block block_posts %}
+        <form method="get" action="{% url 'post-create' %}">
+            <button>Create New Post</button>
+        </form>
         <h3>All posts:</h3>
         <ol>
             {% for post in posts %}

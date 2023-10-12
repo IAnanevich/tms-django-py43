@@ -9,6 +9,9 @@
 <body>
     {% block block_posts %}
         {% if post %}
+            <form method="get" action="{% url 'post-update' post.id %}">
+                <button>Update this post</button>
+            </form>
             <table width=100% border="1px solid">
                 <tr>
                     <th>Name</th>
