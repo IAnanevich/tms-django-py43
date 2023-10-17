@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
 
+from comment.form import CommentForm
 from info.form import InfoBlogForm
 from info.models import InfoBlog
 
@@ -57,10 +58,7 @@ class PostDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = InfoBlog.objects.filter(is_deleted=False)
-        # print(50*'-')
-        # print(context['posts'].values()[0]['name'])
-        # print(context['posts'].query)
-        # print(50*'-')
+
         return context
 
 

@@ -12,7 +12,7 @@
             <form method="get" action="{% url 'post-update' post.id %}">
                 <button>Update this post</button>
             </form>
-            <table width=100% border="1px solid">
+            <table width=100% border="1px solid" bgcolor="#dcdcdc">
                 <tr>
                     <th>Name</th>
                     <th>Text</th>
@@ -28,6 +28,33 @@
                     </tr>
 
             </table>
+
+            <br>
+
+            <h2>Write a Comment for this Post:</h2>
+            <form method="get" action="{% url 'comment-create' post.id%}">
+                <button>Write</button>
+            </form>
+
+            <br>
+            <h2>Comments:</h2>
+
+            <table width=100% border="1px solid">
+                <tr>
+                    <th>Text</th>
+                    <th>Rating</th>
+                    <th>Created At</th>
+                </tr>
+                {% for comment in post.comments.values %}
+                    <tr>
+                        <td>{{ comment.text }}</td>
+                        <td>{{ comment.rating }}</td>
+                        <td>{{ comment.created_at }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
         {% else %}
             <h1>NOT FOUND</h1>
         {% endif %}
