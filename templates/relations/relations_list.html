@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    {% block block_posts %}
+
+        <h2>Students</h2>
+        <a href="create/">Add new Student</a>
+        <table width=100% border="1px solid" bgcolor="#dcdcdc">
+
+            <tr>
+
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Teacher Last Name</th>
+                <th>Teacher First Name</th>
+                <th>Teacher ID</th>
+                <th>Courses</th>
+
+            </tr>
+
+            {% for student in students %}
+
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.age }}</td>
+                    <td>{{ student.teacher.last_name }}</td>
+                    <td>{{ student.teacher.first_name }}</td>
+                    <td>{{ student.teacher.id }}</td>
+                    <td>
+                        {% for course in student.course.all %}
+                            {{ course.name }}
+                            <br>
+                        {% endfor %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% endblock %}
+
+
+</body>
+</html>
