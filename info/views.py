@@ -73,3 +73,7 @@ class PostUpdateView(generic.UpdateView):
 
 class PostDeleteView(generic.DeleteView):
     pass
+
+
+class StudentsListView:
+    pass
