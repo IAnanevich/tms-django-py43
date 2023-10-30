@@ -1,4 +1,6 @@
-{% extends 'index.html' %}
+{#{% extends 'index.html' %}#}
+{% load static %}
+{% load i18n %}
 
 
 <!DOCTYPE html>
@@ -6,52 +8,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" text="text/css" href="{% static 'css/students.css' %}">
 </head>
 <body>
 
-    {% block block_posts %}
+{#    {% block block_posts %}#}
 
-        <h2>Students</h2>
-        <a href="create/">Add new Student</a>
-        <table width=100% border="1px solid" bgcolor="#dcdcdc">
+    <h1>{% trans "Hello world" %}</h1>
 
-            <tr>
+{#    <h2>Students</h2>#}
+{#    <a href="create/">Add new Student</a>#}
+{#    <table>#}
+{##}
+{#        <tr>#}
+{##}
+{#            <th>ID</th>#}
+{#            <th>First Name</th>#}
+{#            <th>Last Name</th>#}
+{#            <th>Age</th>#}
+{#            <th>Teacher Last Name</th>#}
+{#            <th>Teacher First Name</th>#}
+{#            <th>Teacher ID</th>#}
+{#            <th>Courses</th>#}
+{#            <th>Photo</th>#}
+{##}
+{#        </tr>#}
+{##}
+{#        {% for student in students %}#}
+{##}
+{#            <tr>#}
+{#                <td>{{ student.id }}</td>#}
+{#                <td>{{ student.first_name }}</td>#}
+{#                <td>{{ student.last_name }}</td>#}
+{#                <td>{{ student.age }}</td>#}
+{#                <td>{{ student.teacher.last_name }}</td>#}
+{#                <td>{{ student.teacher.first_name }}</td>#}
+{#                <td>{{ student.teacher.id }}</td>#}
+{#                <td>#}
+{#                    {% for course in student.course.all %}#}
+{#                        {{ course.name }}#}
+{#                        <br>#}
+{#                    {% endfor %}#}
+{#                </td>#}
+{#                <td>#}
+{#                    {% if student.photo %}#}
+{#                        <img src="{{ student.photo.url }}" alt="">#}
+{#                    {% else %}#}
+{#                        <h4>No Photo</h4>#}
+{#                    {% endif %}#}
+{#                </td>#}
+{##}
+{#            </tr>#}
+{##}
+{#        {% endfor %}#}
+{##}
+{#    </table>#}
 
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Age</th>
-                <th>Teacher Last Name</th>
-                <th>Teacher First Name</th>
-                <th>Teacher ID</th>
-                <th>Courses</th>
-
-            </tr>
-
-            {% for student in students %}
-
-                <tr>
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.first_name }}</td>
-                    <td>{{ student.last_name }}</td>
-                    <td>{{ student.age }}</td>
-                    <td>{{ student.teacher.last_name }}</td>
-                    <td>{{ student.teacher.first_name }}</td>
-                    <td>{{ student.teacher.id }}</td>
-                    <td>
-                        {% for course in student.course.all %}
-                            {{ course.name }}
-                            <br>
-                        {% endfor %}
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-        </table>
-
-    {% endblock %}
+{#    {% endblock %}#}
 
 
 </body>
