@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from comment.form import CommentForm
-from info.form import InfoBlogForm
+from info.form import InfoBlogForm, InfoBlogAccessDateUpdateForm
 from info.models import InfoBlog
 
 
@@ -75,5 +75,42 @@ class PostDeleteView(generic.DeleteView):
     pass
 
 
-class StudentsListView:
-    pass
+# class PostAccessDateUpdateView(generic.FormView):
+#     template_name = 'info_blog/post_update_access_date.html'
+#     form_class = InfoBlogAccessDateUpdateForm
+#
+#     def get_object(self):
+#         return get_object_or_404(InfoBlog, pk=self.kwargs['pk'])
+#
+#     def get_initial(self):
+#         post = self.get_object()
+#         return {'new_access_date': post.access_date}
+#
+#     def form_valid(self, form):
+#         post = self.get_object()
+#         post.access_date = form.cleaned_data['new_access_date']
+#         post.save()
+#         return HttpResponseRedirect(reverse('post-detail', args=[post.id]))
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['post'] = self.get_object()
+#         return context
+
+
+class PostAccessDateUpdateView(generic.UpdateView):
+    template_name = 'info_blog/post_update_access_date.html'
+    form_class = InfoBlogAccessDateUpdateForm
+    model = InfoBlog
+
+    def get_success_url(self):
+        return reverse('post-detail', args=[self.object.id])
+
+    # def form_valid(self, form):
+    #     response = super().form_valid(form)
+    #     return HttpResponseRedirect(reverse('post-detail', args=[self.object.id]))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_object()
+        return context
