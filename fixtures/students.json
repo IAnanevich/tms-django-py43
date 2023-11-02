@@ -1,0 +1,119 @@
+[
+  {
+    "model": "relations.student",
+    "pk": 1,
+    "fields": {
+      "first_name": "Petr",
+      "last_name": "Petrov",
+      "age": 23,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 2,
+    "fields": {
+      "first_name": "Alex",
+      "last_name": "Alexeev",
+      "age": 20,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 3,
+    "fields": {
+      "first_name": "Ivan",
+      "last_name": "Ivanov",
+      "age": 30,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 2
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 12,
+    "fields": {
+      "first_name": "Yura",
+      "last_name": "Gagarin",
+      "age": 20,
+      "photo": "students/lion-logo-6462988_1280.webp",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 13,
+    "fields": {
+      "first_name": "Ivan",
+      "last_name": "Teplov",
+      "age": 20,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 14,
+    "fields": {
+      "first_name": "Max",
+      "last_name": "Gromov",
+      "age": 24,
+      "photo": "students/logo-2150297_640.webp",
+      "is_study": true,
+      "about_me": "<h1><strong><em>I am Max Gromov.&nbsp;</em></strong></h1>",
+      "teacher": 2
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 15,
+    "fields": {
+      "first_name": "Tamara",
+      "last_name": "Serova",
+      "age": 25,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 2
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 16,
+    "fields": {
+      "first_name": "Katya",
+      "last_name": "Serova",
+      "age": 23,
+      "photo": "students/HRLogo1C.jpg",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  },
+  {
+    "model": "relations.student",
+    "pk": 17,
+    "fields": {
+      "first_name": "Petr",
+      "last_name": "Lenin",
+      "age": 30,
+      "photo": "",
+      "is_study": true,
+      "about_me": null,
+      "teacher": 1
+    }
+  }
+]

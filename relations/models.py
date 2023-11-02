@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 
 
@@ -22,6 +23,8 @@ class Student(models.Model):
     last_name = models.CharField('last_name', max_length=30, blank=False, null=False)
     age = models.PositiveSmallIntegerField('age', blank=True, null=True)
     photo = models.ImageField(upload_to='students/', blank=True, null=True)
+    is_study = models.BooleanField('is_study', default=True)
+    about_me = RichTextField(blank=True, null=True)
 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)  # PROTECT, SET_NULL, SET_DEFAULT, DO_NOTHING
     course = models.ManyToManyField(Course, through='CourseStudent')
