@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'info',
     'comment',
     'relations',
-    'ckeditor'
+    'ckeditor',
+    'rest_framework',
+    'rest'
 ]
 
 MIDDLEWARE = [

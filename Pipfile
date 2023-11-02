@@ -9,6 +9,7 @@ python-dotenv = "*"
 psycopg2 = "*"
 pillow = "*"
 django-ckeditor = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
