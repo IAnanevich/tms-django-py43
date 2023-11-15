@@ -36,20 +36,35 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split()
 
 # Application definition
 
-INSTALLED_APPS = [
+CORE_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+LOCAL_APPS = [
     'info',
     'comment',
     'relations',
+    'rest',
+]
+
+THIRD_PARTY_APPS = [
     'ckeditor',
     'rest_framework',
-    'rest'
+    'django_filters'
 ]
+
+INSTALLED_APPS = CORE_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKEND': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

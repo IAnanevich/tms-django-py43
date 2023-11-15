@@ -3,26 +3,6 @@ from rest_framework import serializers
 from rest.models import Book, Author
 
 
-# class BookSerializer(serializers.Serializer):
-#     id = serializers.IntegerField(read_only=True)
-#     name = serializers.CharField()
-#     description = serializers.CharField()
-#     year = serializers.IntegerField()
-#     author_id = serializers.IntegerField()
-#
-#     def create(self, validated_data):
-#         return Book.objects.create(**validated_data)
-    #
-    # def update(self, instance, validated_data):
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.description = validated_data.get('description', instance.description)
-    #     instance.year = validated_data.get('year', instance.year)
-    #     instance.author_id = validated_data.get('author_id', instance.author_id)
-    #
-    #     instance.save()
-    #     return instance
-
-
 class AuthorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
@@ -34,7 +14,7 @@ class BookListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'name', 'year', 'author_name')
+        fields = ('id', 'name', 'year', 'author_name', 'image')
         read_only_fields = ('author_name', )
 
     def get_author_name(self, obj):
@@ -45,14 +25,21 @@ class BookCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'name', 'year', 'description', 'author')
+        fields = ('id', 'name', 'year', 'description', 'author', 'image')
 
 
 class BookUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'name', 'year', 'description', 'author')
+        fields = ('id', 'name', 'year', 'description', 'author',)
+
+
+class BookImageUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = ('image', )
 
 
 class BookRetrieveSerializer(serializers.ModelSerializer):
@@ -60,7 +47,7 @@ class BookRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'name', 'year', 'description', 'author')
+        fields = ('id', 'name', 'year', 'description', 'author', 'image')
         extra_kwargs = {
             'author': {'write_only': True},
         }
