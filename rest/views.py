@@ -1,112 +1,39 @@
-from rest_framework import status, generics, mixins, viewsets
+from django_filters import rest_framework as django_filters
+from rest_framework import status, viewsets, filters
 from rest_framework.decorators import action
-from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
+from rest.filters import BookFilter, AuthorFilter
 from rest.models import Book, Author
-from rest.serializers import BookListSerializer, AuthorsSerializer, BookRetrieveSerializer, \
-    BookCreateSerializer, BookUpdateSerializer, BookRecentBooksSerializer
-
-
-# class BookListCreateView(APIView):
-#     def get(self, request):
-#         # name = request.query_params.get('name')
-#         books = Book.objects.all()
-#         serializer = BookSerializer(books, many=True)
-#         return Response({'books': serializer.data})
-#
-#     def post(self, request):
-#         books = request.data.get('books')
-#
-#         serializer = BookSerializer(data=books)
-#         if serializer.is_valid(raise_exception=True):
-#             new_book = serializer.save()
-#         list_serializer = BookSerializer(new_book)
-#         return Response({'new_book': list_serializer.data})
-#
-#
-# class BookRetrieveUpdateDeleteView(APIView):
-#     def get(self, request, pk):
-#         books = Book.objects.get(id=pk)
-#         serializer = BookSerializer(books)
-#         return Response({'books': serializer.data})
-#
-#     def put(self, request, pk):
-#         book = get_object_or_404(Book.objects.all(), pk=pk)
-#         data = request.data.get('books')
-#         serializer = BookSerializer(data=data, instance=book, partial=True)
-#
-#         if serializer.is_valid(raise_exception=True):
-#             new_book = serializer.save()
-#         list_serializer = BookSerializer(new_book)
-#         return Response({'updated_book': list_serializer.data})
-#
-#     def delete(self, request, pk):
-#         book = get_object_or_404(Book.objects.all(), pk=pk)
-#         book.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# class BookView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-# class BookView(generics.ListCreateAPIView):
-#     queryset = Book.objects.filter(is_deleted=False)
-#     serializer_class = BookSerializer
-#
-#     def list(self, request, *args, **kwargs):
-#         year = request.query_params.get('year')
-#         sorting = request.query_params.get('sorting')
-#         if year:
-#             self.queryset = self.queryset.filter(year__gte=year)
-#         if sorting:
-#             self.queryset = self.queryset.order_by(sorting)
-#         return super().list(request, *args, **kwargs)
-#
-#     # def get(self, request, *args, **kwargs):
-#     #     return self.list(request, *args, **kwargs)
-#     #
-#     # def post(self, request, *args, **kwargs):
-#     #     return self.create(request, *args, **kwargs)
-#
-#
-# class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Book.objects.filter(is_deleted=False)
-#     serializer_class = SingleBookSerializer
-#
-#     # def retrieve(self, request, *args, **kwargs):
-#     #     print(request.query_params)
-#     #     return super().retrieve(request, *args, **kwargs)
-#
-#     def delete(self, request, *args, **kwargs):
-#         book = self.get_object()
-#         book.is_deleted = True
-#         book.save()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# class BookViewSet(viewsets.ViewSet):
-#
-#     def list(self, request):
-#         queryset = Book.objects.all()
-#         serializer = BookSerializer(queryset, many=True)
-#         return Response(serializer.data)
-#
-#     def retrieve(self, request, pk=None):
-#         queryset = Book.objects.all()
-#         book = get_object_or_404(queryset, pk=pk)
-#         serializer = SingleBookSerializer(book)
-#         return Response(serializer.data)
+from rest.pagination import BookPagination
+from rest.serializers import (
+    BookListSerializer,
+    BookRetrieveSerializer,
+    BookCreateSerializer,
+    BookUpdateSerializer,
+    BookRecentBooksSerializer,
+    BookImageUpdateSerializer,
+    AuthorsSerializer,
+)
+from rest.services import BookService
 
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.filter(is_deleted=False)
     serializer_class = BookListSerializer
+    filter_backends = (django_filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
+    filterset_class = BookFilter
+    ordering_fields = ('id', 'name', 'year', 'author')
+    ordering = ('-id', )
+    search_fields = ('name', 'year', 'author__last_name', 'author__first_name')
+    pagination_class = BookPagination
     serializer_classes = {
         'list': BookListSerializer,
         'create': BookCreateSerializer,
         'retrieve': BookRetrieveSerializer,
         'update': BookUpdateSerializer,
         'recent_books': BookRecentBooksSerializer,
+        'update_image': BookImageUpdateSerializer,
     }
 
     def get_serializer_class(self):
@@ -124,10 +51,23 @@ class BookViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_classes.get(self.action, self.serializer_class)(recent_books, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['patch'], url_path='update-image')
+    def update_image(self, request, pk=None):
+        book = self.get_object()
+        serializer = self.serializer_classes.get(self.action, self.serializer_class)(book, request.data, partial=True)
+
+        BookService.update_image(serializer=serializer, instance=book, request=request)
+
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
+
 
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
+    filter_backends = (django_filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
+    filterset_class = AuthorFilter
 
     @action(detail=True, methods=['get'], url_path='books')
     def books(self, request, pk=None):

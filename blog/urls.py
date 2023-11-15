@@ -24,7 +24,6 @@ urlpatterns = [
     path('blog/', include('info.urls')),
     path('relations/', include('relations.urls')),
     path('api/', include('rest.urls')),
-    # path('comment/', include('comment.urls')),
 ]
 
 if settings.DEBUG:
