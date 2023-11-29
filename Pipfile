@@ -11,6 +11,8 @@ pillow = "*"
 django-ckeditor = "*"
 djangorestframework = "*"
 django-filter = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

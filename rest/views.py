@@ -1,9 +1,12 @@
+from django.utils.decorators import method_decorator
 from django_filters import rest_framework as django_filters
 from rest_framework import status, viewsets, filters
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from rest.filters import BookFilter, AuthorFilter
+from rest.middleware import BeforeRequestMiddleware, AfterRequestMiddleware
 from rest.models import Book, Author
 from rest.pagination import BookPagination
 from rest.serializers import (
@@ -27,6 +30,7 @@ class BookViewSet(viewsets.ModelViewSet):
     ordering = ('-id', )
     search_fields = ('name', 'year', 'author__last_name', 'author__first_name')
     pagination_class = BookPagination
+    permission_classes = (IsAuthenticated, )
     serializer_classes = {
         'list': BookListSerializer,
         'create': BookCreateSerializer,
@@ -38,6 +42,19 @@ class BookViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            print('fnwsncnwsfncwsnefnwecmwpmfvpcmndwpcmnpwepfnwpnmcv')
+
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         book = self.get_object()
@@ -63,6 +80,8 @@ class BookViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+@method_decorator(BeforeRequestMiddleware, name='dispatch')
+@method_decorator(AfterRequestMiddleware, name='dispatch')
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
