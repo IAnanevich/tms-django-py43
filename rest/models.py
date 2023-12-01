@@ -1,6 +1,8 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from rest.managers import BookManager, DeletedBookManager
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=20, blank=False, null=False)
@@ -23,7 +25,11 @@ class Book(models.Model):
     author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(null=False, default=False)
     image = models.ImageField(upload_to='books/', null=True, blank=True)
+    is_free = models.BooleanField(null=False, default=True)
 
     def __str__(self):
         return self.name
 
+    objects = BookManager()  # is_deleted = False
+    all_objects = models.Manager()  # all
+    deleted_objects = DeletedBookManager()  # is_deleted = True
