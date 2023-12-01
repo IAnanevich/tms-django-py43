@@ -14,7 +14,7 @@ class BookListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'name', 'year', 'author_name', 'image')
+        fields = ('id', 'name', 'year', 'author_name', 'image', 'is_deleted')
         read_only_fields = ('author_name', )
 
     def get_author_name(self, obj):

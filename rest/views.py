@@ -9,6 +9,7 @@ from rest.filters import BookFilter, AuthorFilter
 from rest.middleware import BeforeRequestMiddleware, AfterRequestMiddleware
 from rest.models import Book, Author
 from rest.pagination import BookPagination
+from rest.permissions import IsPaidUserPermission, IsAdminUpdatePermission
 from rest.serializers import (
     BookListSerializer,
     BookRetrieveSerializer,
@@ -22,7 +23,7 @@ from rest.services import BookService
 
 
 class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.filter(is_deleted=False)
+    queryset = Book.objects.all()
     serializer_class = BookListSerializer
     filter_backends = (django_filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
     filterset_class = BookFilter
@@ -30,31 +31,20 @@ class BookViewSet(viewsets.ModelViewSet):
     ordering = ('-id', )
     search_fields = ('name', 'year', 'author__last_name', 'author__first_name')
     pagination_class = BookPagination
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, IsPaidUserPermission, IsAdminUpdatePermission)
     serializer_classes = {
         'list': BookListSerializer,
         'create': BookCreateSerializer,
         'retrieve': BookRetrieveSerializer,
         'update': BookUpdateSerializer,
+        'partial_update': BookUpdateSerializer,
         'recent_books': BookRecentBooksSerializer,
         'update_image': BookImageUpdateSerializer,
+        'paid_books': BookListSerializer,
     }
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            print('fnwsncnwsfncwsnefnwecmwpmfvpcmndwpcmnpwepfnwpnmcv')
-
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         book = self.get_object()
@@ -77,6 +67,14 @@ class BookViewSet(viewsets.ModelViewSet):
 
         self.perform_update(serializer)
 
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='paid-books')
+    def paid_books(self, request):
+        # if not request.user.is_paid:
+        #     return Response({'message': 'you can\'t to do it'}, status=status.HTTP_403_FORBIDDEN)
+        paid_books = Book.objects.filter(is_free=False)
+        serializer = self.get_serializer_class()(paid_books, many=True)
         return Response(serializer.data)
 
 

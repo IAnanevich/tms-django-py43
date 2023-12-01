@@ -85,7 +85,10 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'authentication.serializers.UserSerializer',
         'user_create': 'authentication.serializers.UserCreateSerializer',
-    }
+    },
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',  # frontend url
+    'SEND_ACTIVATION_EMAIL': True,
+    'PASSWORD_RESET_CONFIRM_URL': '/api/auth/users/reset_password_confirm/{uid}/{token}'  # frontend url
 }
 
 DJANGO_MIDDLEWARE = [
@@ -104,6 +107,15 @@ CUSTOM_MIDDLEWARE = [
 ]
 
 MIDDLEWARE = DJANGO_MIDDLEWARE + CUSTOM_MIDDLEWARE
+
+DEFAULT_FROM_EMAIL = 'ivan.ananevich28@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'ваш@gmail.com'
+# EMAIL_HOST_PASSWORD = 'ваш_пароль'
 
 ROOT_URLCONF = "blog.urls"
 
