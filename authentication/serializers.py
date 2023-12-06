@@ -13,14 +13,17 @@ class UserSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 'phone_number', 'gender', 'birth_date')
+        ref_name = 'CustomUserSerializer'
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         fields = ('email', 'username', 'password', )
+        ref_name = 'CustomUserCreateSerializer'
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('email', 'first_name', 'last_name', 'phone_number', 'gender', 'birth_date')
+        ref_name = 'CustomUserUpdateSerializer'
