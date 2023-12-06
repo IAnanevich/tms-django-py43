@@ -18,6 +18,24 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+from rest_framework.authentication import TokenAuthentication
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Shop books API',
+        description='our description',
+        default_version='v1',
+        terms_of_service='https://fewfmomrw.com',
+        contact=openapi.Contact(email='fewfiewif@gmai.com'),
+        license=openapi.License(name='License')
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny, ],
+    authentication_classes=[TokenAuthentication, ]
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,7 +43,9 @@ urlpatterns = [
     path('relations/', include('relations.urls')),
     path('api/', include([
         path('', include('rest.urls')),
-        path('', include('authentication.urls'))
+        path('', include('authentication.urls')),
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
+        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc-ui')
     ])),
 ]
 

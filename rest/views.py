@@ -46,6 +46,17 @@ class BookViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
 
+    # @swagger_auto_schema(
+    #     responses={200: BookListSerializer(many=True)},
+    #     operation_description='Returns all books with additional filters and ordering'
+    # )
+    # def list(self, request, *args, **kwargs):
+    #     return super().list(request, *args, **kwargs)
+
+    # @swagger_serializer_method(serializer_or_field=BookCreateSerializer)
+    # def create(self, request, *args, **kwargs):
+    #     return super().create(request, *args, **kwargs)
+
     def destroy(self, request, *args, **kwargs):
         book = self.get_object()
         book.is_deleted = True
@@ -58,6 +69,11 @@ class BookViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_classes.get(self.action, self.serializer_class)(recent_books, many=True)
         return Response(serializer.data)
 
+    # @swagger_auto_schema(
+    #     request_body=BookImageUpdateSerializer,
+    #     responses={200: BookImageUpdateSerializer()},
+    #     operation_description='Update Image of a specific book'
+    # )
     @action(detail=True, methods=['patch'], url_path='update-image')
     def update_image(self, request, pk=None):
         book = self.get_object()
