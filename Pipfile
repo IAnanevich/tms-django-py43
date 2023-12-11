@@ -14,6 +14,11 @@ django-filter = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
+gunicorn = "*"
+pymemcache = "*"
+django-pymemcache = "*"
+django-debug-toolbar = "*"
+django-redis = "*"
 
 [dev-packages]
 

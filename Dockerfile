@@ -8,6 +8,7 @@ WORKDIR /code
 #
 RUN pip3 install pipenv
 RUN apt-get update && apt-get install -y --no-install-recommends gcc
+RUN apt-get update && apt-get install -y supervisor
 RUN apt-get install -y netcat-traditional
 
 #COPY requirements.txt .
