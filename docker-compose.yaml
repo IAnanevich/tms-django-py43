@@ -12,6 +12,8 @@ services:
       - '8000:8000'
     depends_on:
       - db
+      - redis
+#      - memcached
     networks:
       - main
 
@@ -26,9 +28,36 @@ services:
     networks:
       - main
 
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - .:/code
+    ports:
+      - '80:80'
+    depends_on:
+      - web
+    networks:
+      - main
+
+#  memcached:
+#    image: memcached
+#    ports:
+#      - '11211:11211'
+#    networks:
+#      - main
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    networks:
+      - main
+
 
 networks:
   main:
 
 volumes:
   db:
+  nginx:

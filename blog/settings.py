@@ -62,7 +62,8 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'djoser',
     'rest_framework_simplejwt',
-    'drf_yasg'
+    'drf_yasg',
+    'debug_toolbar',
 ]
 
 INSTALLED_APPS = CORE_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -103,6 +104,23 @@ DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '/api/auth/users/reset_password_confirm/{uid}/{token}'  # frontend url
 }
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': 'django-memcached-1:11211'
+#     }
+# }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        }
+    }
+}
+
 DJANGO_MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -111,6 +129,7 @@ DJANGO_MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 CUSTOM_MIDDLEWARE = [
@@ -119,6 +138,17 @@ CUSTOM_MIDDLEWARE = [
 ]
 
 MIDDLEWARE = DJANGO_MIDDLEWARE + CUSTOM_MIDDLEWARE
+
+INTERNAL_IPS = [
+    '0.0.0.0',
+    # 'web',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+}
+
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 DEFAULT_FROM_EMAIL = 'ivan.ananevich28@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

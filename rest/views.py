@@ -1,4 +1,7 @@
+from time import sleep
+
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page, cache_control
 from django_filters import rest_framework as django_filters
 from rest_framework import status, viewsets, filters
 from rest_framework.decorators import action
@@ -94,13 +97,19 @@ class BookViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-@method_decorator(BeforeRequestMiddleware, name='dispatch')
-@method_decorator(AfterRequestMiddleware, name='dispatch')
+# @method_decorator(BeforeRequestMiddleware, name='dispatch')
+# @method_decorator(AfterRequestMiddleware, name='dispatch')
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
     filter_backends = (django_filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
     filterset_class = AuthorFilter
+
+    @method_decorator(cache_page(10))
+    # @method_decorator(cache_control(max_age=15, no_cache=True, no_store=True))
+    def list(self, request, *args, **kwargs):
+        # sleep(5)
+        return super().list(request, *args, **kwargs)
 
     @action(detail=True, methods=['get'], url_path='books')
     def books(self, request, pk=None):
