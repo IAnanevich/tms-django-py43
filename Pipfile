@@ -19,6 +19,7 @@ pymemcache = "*"
 django-pymemcache = "*"
 django-debug-toolbar = "*"
 django-redis = "*"
+celery = "*"
 
 [dev-packages]
 

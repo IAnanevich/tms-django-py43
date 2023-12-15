@@ -54,6 +54,18 @@ services:
     networks:
       - main
 
+  celery:
+    build:
+      context: .
+    command: celery -A blog worker -l info
+    depends_on:
+      - redis
+    volumes:
+      - .:/code
+    env_file:
+      - .env
+    networks:
+      - main
 
 networks:
   main:
@@ -61,3 +73,4 @@ networks:
 volumes:
   db:
   nginx:
+  celery:
