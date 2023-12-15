@@ -41,6 +41,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('blog/', include('info.urls')),
     path('relations/', include('relations.urls')),
+    path('feedback/', include('feedback.urls')),
     path('api/', include([
         path('', include('rest.urls')),
         path('', include('authentication.urls')),
