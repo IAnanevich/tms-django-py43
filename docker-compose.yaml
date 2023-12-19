@@ -67,6 +67,17 @@ services:
     networks:
       - main
 
+  celery-beat:
+    build:
+      context: .
+    command: ['./entrypoint_celery_beat.sh']
+    depends_on:
+      - web
+    env_file:
+      - .env
+    networks:
+      - main
+
 networks:
   main:
 
