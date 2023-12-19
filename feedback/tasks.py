@@ -11,6 +11,7 @@ logger = get_task_logger(__name__)
 @shared_task
 def send_email_task(email, message):
     sleep(20)
+    # try:
     send_mail(
         subject='Your feedback',
         message=f'{message}\n\nThank You!',
@@ -19,6 +20,8 @@ def send_email_task(email, message):
         fail_silently=False
     )
     logger.info('Email sent successfully.')
+    # except as e:
+    #     logger.error(f'Email didn\'t send successfully: {e}')
 
 
 @shared_task

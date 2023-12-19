@@ -20,6 +20,7 @@ django-pymemcache = "*"
 django-debug-toolbar = "*"
 django-redis = "*"
 celery = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 
