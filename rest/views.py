@@ -105,7 +105,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
     filter_backends = (django_filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
     filterset_class = AuthorFilter
 
-    @method_decorator(cache_page(10))
+    # @method_decorator(cache_page(10))
     # @method_decorator(cache_control(max_age=15, no_cache=True, no_store=True))
     def list(self, request, *args, **kwargs):
         # sleep(5)

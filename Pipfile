@@ -21,6 +21,9 @@ django-debug-toolbar = "*"
 django-redis = "*"
 celery = "*"
 django-celery-beat = "*"
+pytest = "*"
+django-pytest = "*"
+pytest-cov = "*"
 
 [dev-packages]
 
