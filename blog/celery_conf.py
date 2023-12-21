@@ -13,7 +13,7 @@ celery_app.autodiscover_tasks()
 celery_app.conf.beat_schedule = {
     'delete_deleted_books': {
         'task': 'rest.tasks.delete_deleted_books',
-        # 'schedule': crontab(day_of_month='1', hour='0', minute='0'),  # в первый день месяца в 00:00
-        'schedule': crontab(minute='*'),  # каждую минуту
+        'schedule': crontab(day_of_month='1', hour='0', minute='0'),  # в первый день месяца в 00:00
+        # 'schedule': crontab(minute='*'),  # каждую минуту
     }
 }

@@ -1,5 +1,6 @@
 .EXPORT_ALL_VARIABLES:
 COMPOSE_FILE ?= docker-compose.yaml
+TEST_COMPOSE_FILE ?= docker-compose.test.yaml
 
 # билдим докер имейдж с Dockerfile
 .PHONY: docker-build
@@ -51,3 +52,8 @@ migrate:
 # создать и принять миграции
 .PHONY: migrations
 migrations: makemigrations migrate
+
+# прогнать тесты
+.PHONY: tests
+tests:
+	docker-compose -f $(TEST_COMPOSE_FILE) --env-file=.test_env up --build
